@@ -1,0 +1,24 @@
+{
+    "name": "Text2 - Chat AI",
+    "short_name": "Text2 Chat AI",
+    "description": "Text2 - Chat AI: Free AI assistant for English learning and conversation",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#181c24",
+    "theme_color": "#4f8cff",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "https://chat.text2.click/favicon.ico",
+            "sizes": "192x192",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "https://chat.text2.click/favicon.ico",
+            "sizes": "512x512",
+            "type": "image/x-icon"
+        }
+    ],
+    "categories": ["education", "productivity", "utilities"],
+    "lang": "en-US"
+} 
