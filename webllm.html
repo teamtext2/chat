@@ -613,21 +613,25 @@
 
         async function initWebLLM() {
             chat = new webllm.ChatModule();
-            // Hiện overlay
             document.getElementById("model-loading-overlay").style.display = "flex";
-            // Hàm cập nhật tiến trình
             function onProgress(ratio) {
                 const percent = Math.round(ratio * 100);
                 document.getElementById("model-progress-bar").style.width = percent + "%";
                 document.getElementById("model-progress-text").textContent = percent + "%";
+                console.log("Model loading progress:", percent + "%");
             }
-            await chat.reload("TinyLlama-Chat", { onProgress });
-            webllmReady = true;
-            // Ẩn overlay khi xong
-            document.getElementById("model-loading-overlay").style.display = "none";
-            // Bật lại nút gửi chat
-            document.getElementById("sendButton").disabled = false;
-            document.getElementById("userInput").disabled = false;
+            try {
+                await chat.reload("TinyLlama-Chat", { onProgress });
+                webllmReady = true;
+                document.getElementById("model-loading-overlay").style.display = "none";
+                document.getElementById("sendButton").disabled = false;
+                document.getElementById("userInput").disabled = false;
+                console.log("Model loaded successfully!");
+            } catch (e) {
+                addBotMessage("❌ Lỗi tải model: " + e.message);
+                document.getElementById("model-loading-overlay").style.display = "none";
+                console.error("Model load error:", e);
+            }
         }
         initWebLLM();
 
