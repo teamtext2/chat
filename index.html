@@ -694,18 +694,16 @@
             // Show loading animation
             const loadingRow = addLoadingMessage();
             
-            const togetherApiKey = "4cf2ed88b3d39e9f196ab88cefa8bf0bc21d698ce9cdf8f20cf80a596247378c";
             const formattedMessage = `answer briefly under 700 characters in a teen style, and play as you are text2 chat ai of text2: ${message}`;
             
             try {
-                const response = await fetch("https://api.together.xyz/v1/chat/completions", {
+                const response = await fetch("https://text2-team-api-key-llm.text2team.workers.dev/", {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${togetherApiKey}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        model: "deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free",
+                        model: "meta-llama/Llama-Vision-Free",
                         messages: [
                             {
                                 role: "user",
