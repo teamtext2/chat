@@ -693,22 +693,16 @@
             // Show loading animation
             const loadingRow = addLoadingMessage();
             
-            const formattedMessage = `answer briefly under 700 characters in a teen style, and play as you are text2 chat ai of text2: ${message}`;
+            const workerUrl = "https://text2llmgroq.text2team.workers.dev/"; // đổi thành URL Worker của bạn
             
             try {
-                const response = await fetch("https://text2-team-api-key-llm.text2team.workers.dev/", {
+                const response = await fetch(workerUrl, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        model: "meta-llama/Llama-Vision-Free",
-                        messages: [
-                            {
-                                role: "user",
-                                content: formattedMessage
-                            }
-                        ]
+                        message: `answer briefly under 700 characters in a teen style, and play as you are text2 chat ai of text2: ${message}`
                     })
                 });
                 
