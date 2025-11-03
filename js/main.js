@@ -130,21 +130,27 @@ async function sendMessage() {
     // Show loading animation
     const loadingRow = addLoadingMessage();
     
-    const workerUrl = "https://text2llmgroq.text2team.workers.dev/"; // đổi thành URL Worker của bạn
-    
+    const WORKER_URL = "https://cloudflare-llm.text2team.workers.dev"; 
     try {
-        const response = await fetch(workerUrl, {
+        const response = await fetch(WORKER_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                message: `answer briefly under 700 characters in a teen style, and play as you are text2 chat ai of text2: ${message}`
+                prompt: `answer briefly under 700 characters in a teen style, and play as you are text2 chat ai of text2: ${message}`
             })
         });
         
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`Server lỗi (${response.status}): ${errText}`);
+        }
+        
         const data = await response.json();
-        let botReply = data.choices?.[0]?.message?.content || "Oops, didn't understand that 😅";
+        
+        // 👉 Worker trả về dạng { reply: { response: "..." } }
+        let botReply = data?.reply?.response || data?.reply || "Oops, didn't understand that 😅";
         botReply = botReply.replace(/Qwen|Together/g, "Text2");
         botReply = botReply.replace(/\*+/g, "");
         
