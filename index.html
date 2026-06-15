@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3375983939015019" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3375983939015019"
+        crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
@@ -9,8 +11,9 @@
     <!-- Premium font for exact matches to the typography in the screenshot -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <style>
         /* CSS resets and base styles */
         * {
@@ -36,7 +39,8 @@
         /* App container centered on desktop, full screen on mobile */
         .app-container {
             width: 100%;
-            max-width: 480px; /* Portrait mobile screen ratio */
+            max-width: 480px;
+            /* Portrait mobile screen ratio */
             height: 100vh;
             max-height: 960px;
             background: linear-gradient(110deg, #000000 0%, #060708 35%, #464a4f 100%);
@@ -46,16 +50,18 @@
             position: relative;
             box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            overflow-y: auto;
+            overflow: hidden;
         }
 
         /* Scrollbar styling */
         .app-container::-webkit-scrollbar {
             width: 4px;
         }
+
         .app-container::-webkit-scrollbar-track {
             background: transparent;
         }
+
         .app-container::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 2px;
@@ -65,6 +71,7 @@
             body {
                 background-color: #000000;
             }
+
             .app-container {
                 max-width: 100%;
                 height: 100vh;
@@ -81,7 +88,8 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-bottom: 52px; /* Spacing between header and the first chat item */
+            margin-bottom: 52px;
+            /* Spacing between header and the first chat item */
         }
 
         .logo-text {
@@ -171,6 +179,22 @@
             flex-direction: column;
             gap: 24px;
             width: 100%;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 4px;
+        }
+
+        .chat-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
         }
 
         .chat-item {
@@ -205,7 +229,8 @@
 
         /* Green status/outline border for HOA NHAT ANH avatar */
         .chat-item.has-status-border .chat-avatar {
-            border: 2px solid #005039; /* Deep teal/green border exactly like screenshot */
+            border: 2px solid #005039;
+            /* Deep teal/green border exactly like screenshot */
             padding: 1.5px;
             background-color: transparent;
         }
@@ -228,76 +253,612 @@
             font-weight: 400;
             color: rgba(255, 255, 255, 0.7);
         }
+
+        /* --- Chat View Integration Styles --- */
+        .main-view {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .app-container.chat-active .main-view {
+            transform: translateX(-12%) scale(0.97);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .chat-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(110deg, #000000 0%, #060708 35%, #464a4f 100%);
+            display: flex;
+            flex-direction: column;
+            padding: 50px 24px 40px 24px;
+            z-index: 100;
+            transform: translateX(100%);
+            transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+            visibility: hidden;
+        }
+
+        .chat-view.active {
+            transform: translateX(0);
+            visibility: visible;
+        }
+
+        @media (max-width: 480px) {
+            .chat-view {
+                padding: 40px 20px 30px 20px;
+            }
+        }
+
+        /* Chat view Header */
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 44px;
+        }
+
+        /* Circular Back Button */
+        .btn-back {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 1.2px solid rgba(255, 255, 255, 0.38);
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: scale(1.05);
+        }
+
+        .btn-back:active {
+            transform: scale(0.95);
+        }
+
+        /* Custom profile pill in Chat View */
+        .chat-view .btn-profile-pill {
+            height: 52px;
+            padding: 4px 16px 4px 4px;
+            border-radius: 26px;
+            border: 1.2px solid rgba(255, 255, 255, 0.38);
+            background: rgba(255, 255, 255, 0.02);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chat-view .btn-profile-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: scale(1.03);
+        }
+
+        .chat-view .btn-profile-pill:active {
+            transform: scale(0.97);
+        }
+
+        .chat-view .pill-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chat-view .pill-name {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: -0.2px;
+        }
+
+        /* Circular background for arrow inside pill */
+        .pill-arrow-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .chat-view .btn-profile-pill:hover .pill-arrow-circle {
+            background: rgba(255, 255, 255, 0.28);
+            transform: scale(1.05);
+        }
+
+        /* Chat Content area */
+        .chat-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            overflow-y: auto;
+            margin-bottom: 30px;
+            padding-right: 4px;
+        }
+
+        /* Scrollbar styling for message area */
+        .chat-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+
+        /* Chat Bubbles */
+        .chat-bubble-placeholder {
+            min-height: 52px;
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.15);
+            transition: background 0.2s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: #ffffff;
+            font-size: 15px;
+            line-height: 1.4;
+            word-break: break-word;
+            animation: bubbleAppear 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+        }
+
+        .chat-bubble-placeholder:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Left-aligned bubble (Incoming) */
+        .bubble-left {
+            width: 78%;
+            margin-right: auto;
+            transform-origin: left bottom;
+        }
+
+        /* Right-aligned bubble (Outgoing) */
+        .bubble-right {
+            width: 80%;
+            margin-left: auto;
+            transform-origin: right bottom;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        @keyframes bubbleAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Bottom Input Bar */
+        .bottom-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .input-wrapper {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .message-input {
+            width: 100%;
+            height: 48px;
+            border-radius: 24px;
+            border: 1.2px solid rgba(255, 255, 255, 0.38);
+            background: transparent;
+            padding: 0 24px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .message-input::placeholder {
+            color: rgba(255, 255, 255, 0.42);
+        }
+
+        .message-input:focus {
+            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Plus Action Button */
+        .btn-plus {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1.2px solid rgba(255, 255, 255, 0.38);
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: #ffffff;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-plus:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: scale(1.05);
+        }
+
+        .btn-plus:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
+
 <body>
 
     <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo-text">Text2Chat</div>
-            
-            <div class="header-actions">
-                <!-- Search & Spark Icon Button -->
-                <button class="btn-search" aria-label="Tìm kiếm">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Magnifying glass path -->
-                        <path d="M11 17C14.3137 17 17 14.3137 17 11C17 7.68629 14.3137 5 11 5C7.68629 5 5 7.68629 5 11C5 14.3137 7.68629 17 11 17Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M15.5 15.5L20 20" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                        <!-- Sparkle Star in the top right -->
-                        <path d="M19 2 Q19 5 22 5 Q19 5 19 8 Q19 5 16 5 Q19 5 19 2 Z" fill="white"/>
+        <!-- Main View (List & Header) -->
+        <div class="main-view">
+            <!-- Header -->
+            <header class="header">
+                <div class="logo-text">Text2Chat</div>
+
+                <div class="header-actions">
+                    <!-- Search & Spark Icon Button -->
+                    <button class="btn-search" aria-label="Tìm kiếm">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Magnifying glass path -->
+                            <path
+                                d="M11 17C14.3137 17 17 14.3137 17 11C17 7.68629 14.3137 5 11 5C7.68629 5 5 7.68629 5 11C5 14.3137 7.68629 17 11 17Z"
+                                stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M15.5 15.5L20 20" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <!-- Sparkle Star in the top right -->
+                            <path d="M19 2 Q19 5 22 5 Q19 5 19 8 Q19 5 16 5 Q19 5 19 2 Z" fill="white" />
+                        </svg>
+                    </button>
+
+                    <!-- Profile Pill Button (linking to profile photo and an action) -->
+                    <button class="btn-profile-pill" aria-label="Tài khoản">
+                        <img class="pill-avatar" src="https://text2.co/post/hoanhatanh/apple-touch-icon.png"
+                            alt="Profile">
+                        <span class="pill-arrow">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M12 5L19 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Chat Conversations List -->
+            <main class="chat-list">
+                <!-- HOA NHAT ANH -->
+                <div class="chat-item has-status-border">
+                    <div class="avatar-wrapper">
+                        <img class="chat-avatar" src="https://text2.co/post/hoanhatanh/apple-touch-icon.png"
+                            alt="HOA NHAT ANH">
+                    </div>
+                    <div class="chat-info">
+                        <h2 class="chat-name">HOA NHAT ANH</h2>
+                        <span class="chat-last-msg">Last messing</span>
+                    </div>
+                </div>
+
+                <!-- People -->
+                <div class="chat-item">
+                    <div class="avatar-wrapper">
+                        <img class="chat-avatar" src="https://facebook.com/favicon.ico" alt="facebook">
+                    </div>
+                    <div class="chat-info">
+                        <h2 class="chat-name">facebook</h2>
+                        <span class="chat-last-msg">Last messing</span>
+                    </div>
+                </div>
+
+                <!-- Text2 -->
+                <div class="chat-item">
+                    <div class="avatar-wrapper">
+                        <img class="chat-avatar" src="https://text2.co/favicon.ico" alt="facebook">
+                    </div>
+                    <div class="chat-info">
+                        <h2 class="chat-name">Text2</h2>
+                        <span class="chat-last-msg">Last messing</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Chat View Overlay -->
+        <div id="chat-view" class="chat-view">
+            <!-- Header -->
+            <header class="chat-header">
+                <!-- Circular Back Button -->
+                <button class="btn-back" id="btn-chat-back" aria-label="Quay lại">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M12 19L5 12L12 5" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
                     </svg>
                 </button>
-                
-                <!-- Profile Pill Button (linking to profile photo and an action) -->
-                <button class="btn-profile-pill" aria-label="Tài khoản">
-                    <img class="pill-avatar" src="assets/avatar_hoa.png" alt="Profile">
-                    <span class="pill-arrow">
+
+                <!-- User Profile Pill -->
+                <button class="btn-profile-pill" aria-label="Thông tin liên hệ">
+                    <img class="pill-avatar" id="chat-view-avatar" src="https://facebook.com/favicon.ico" alt="Profile">
+                    <span id="chat-view-title" class="pill-name">facebook</span>
+                    <div class="pill-arrow-circle">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M12 5L19 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M12 5L19 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
                         </svg>
-                    </span>
+                    </div>
                 </button>
-            </div>
-        </header>
+            </header>
 
-        <!-- Chat Conversations List -->
-        <main class="chat-list">
-            <!-- HOA NHAT ANH -->
-            <div class="chat-item has-status-border">
-                <div class="avatar-wrapper">
-                    <img class="chat-avatar" src="assets/avatar_hoa.png" alt="HOA NHAT ANH">
-                </div>
-                <div class="chat-info">
-                    <h2 class="chat-name">HOA NHAT ANH</h2>
-                    <span class="chat-last-msg">Last messing</span>
-                </div>
-            </div>
+            <!-- Chat Bubble Placeholders -->
+            <main class="chat-content" id="chat-messages-container">
+                <!-- Dynamic Content -->
+            </main>
 
-            <!-- People -->
-            <div class="chat-item">
-                <div class="avatar-wrapper">
-                    <img class="chat-avatar" src="assets/avatar_people.png" alt="People">
+            <!-- Bottom Input Bar -->
+            <footer class="bottom-bar">
+                <div class="input-wrapper">
+                    <input type="text" class="message-input" id="chat-message-input" placeholder="Messsss......"
+                        aria-label="Nhập tin nhắn">
                 </div>
-                <div class="chat-info">
-                    <h2 class="chat-name">People</h2>
-                    <span class="chat-last-msg">Last messing</span>
-                </div>
-            </div>
-
-            <!-- Text2 -->
-            <div class="chat-item">
-                <div class="avatar-wrapper">
-                    <img class="chat-avatar" src="assets/avatar_text2.png" alt="Text2">
-                </div>
-                <div class="chat-info">
-                    <h2 class="chat-name">Text2</h2>
-                    <span class="chat-last-msg">Last messing</span>
-                </div>
-            </div>
-        </main>
+                <button class="btn-plus" id="btn-chat-send" aria-label="Thêm nội dung">
+                    <svg id="plus-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19" stroke="white" stroke-width="2.2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M5 12H19" stroke="white" stroke-width="2.2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <svg id="send-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                        <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </footer>
+        </div>
     </div>
 
+    <!-- Scripts for dynamic chat experience and native-app animations -->
+    <script>
+        // Chat histories database
+        const chatHistories = {
+            "HOA NHAT ANH": [
+                { type: "incoming", text: "Chào bạn! Hôm nay thế nào?" },
+                { type: "outgoing", text: "Mình bình thường, đang làm cái web mượt lắm." },
+                { type: "incoming", text: "Ồ thế à? Xem thử xem nào!" },
+                { type: "outgoing", text: "Đây, xem thử đi, mượt như native app luôn nhé!" }
+            ],
+            "facebook": [
+                { type: "incoming", text: "Chào mừng bạn đến với Facebook!" },
+                { type: "outgoing", text: "Chào Facebook." },
+                { type: "incoming", text: "Bạn có muốn kết nối thêm bạn bè không?" },
+                { type: "outgoing", text: "Để sau đi nhé." }
+            ],
+            "Text2": [
+                { type: "incoming", text: "Chào mừng bạn đến với Text2Chat!" },
+                { type: "outgoing", text: "App chạy nhanh thật đấy." },
+                { type: "incoming", text: "Cảm ơn bạn! Chúng tôi luôn tối ưu để đạt tốc độ cao nhất." },
+                { type: "outgoing", text: "Tuyệt vời!" }
+            ]
+        };
+
+        // Open chat function
+        function openChat(name, avatar) {
+            const containerEl = document.querySelector('.app-container');
+            const chatViewEl = document.getElementById('chat-view');
+            const avatarEl = document.getElementById('chat-view-avatar');
+            const titleEl = document.getElementById('chat-view-title');
+
+            // Set avatar and load message history
+            avatarEl.src = avatar;
+            titleEl.innerText = name;
+
+            // Load messages
+            loadChatMessages(name);
+
+            // Trigger animations
+            containerEl.classList.add('chat-active');
+            chatViewEl.classList.add('active');
+
+            // Push history state if not already there
+            if (window.location.hash !== '#chat') {
+                window.history.pushState({ chatActive: true, name: name, avatar: avatar }, '', '#chat');
+            }
+        }
+
+        // Close chat function
+        function closeChat() {
+            const containerEl = document.querySelector('.app-container');
+            const chatViewEl = document.getElementById('chat-view');
+
+            containerEl.classList.remove('chat-active');
+            chatViewEl.classList.remove('active');
+
+            // Reset input
+            document.getElementById('chat-message-input').value = '';
+            document.getElementById('plus-icon').style.display = 'block';
+            document.getElementById('send-icon').style.display = 'none';
+        }
+
+        // Load chat messages dynamically
+        function loadChatMessages(name) {
+            const container = document.getElementById('chat-messages-container');
+            container.innerHTML = ''; // Clear
+
+            const messages = chatHistories[name] || [
+                { type: "incoming", text: "Xin chào!" },
+                { type: "outgoing", text: "Chào bạn." }
+            ];
+
+            messages.forEach((msg, index) => {
+                const bubble = document.createElement('div');
+                bubble.className = `chat-bubble-placeholder bubble-${msg.type === 'incoming' ? 'left' : 'right'}`;
+                bubble.innerText = msg.text;
+                bubble.style.animationDelay = `${index * 0.08}s`;
+                container.appendChild(bubble);
+            });
+
+            // Scroll to bottom immediately
+            setTimeout(() => {
+                container.scrollTop = container.scrollHeight;
+            }, 50);
+        }
+
+        // Send message function
+        function sendUserMessage() {
+            const messageInput = document.getElementById('chat-message-input');
+            const text = messageInput.value.trim();
+            if (!text) return;
+
+            const activeChatName = document.getElementById('chat-view-title').innerText;
+            if (!chatHistories[activeChatName]) {
+                chatHistories[activeChatName] = [];
+            }
+            chatHistories[activeChatName].push({ type: "outgoing", text: text });
+
+            // Create bubble
+            const container = document.getElementById('chat-messages-container');
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-bubble-placeholder bubble-right';
+            bubble.innerText = text;
+            container.appendChild(bubble);
+
+            // Clear input and toggle icon
+            messageInput.value = '';
+            document.getElementById('plus-icon').style.display = 'block';
+            document.getElementById('send-icon').style.display = 'none';
+
+            // Scroll to bottom
+            container.scrollTo({
+                top: container.scrollHeight,
+                behavior: 'smooth'
+            });
+
+            // Simulate response
+            setTimeout(() => {
+                if (document.getElementById('chat-view-title').innerText === activeChatName) {
+                    const replies = [
+                        "Đang bận xíu, lát rep nha! 🚀",
+                        "Ok luôn 👍",
+                        "Đã nhận tin nhắn! 💬",
+                        "Mượt thật sự đúng không? 😂"
+                    ];
+                    const randomReply = replies[Math.floor(Math.random() * replies.length)];
+
+                    chatHistories[activeChatName].push({ type: "incoming", text: randomReply });
+
+                    const replyBubble = document.createElement('div');
+                    replyBubble.className = 'chat-bubble-placeholder bubble-left';
+                    replyBubble.innerText = randomReply;
+                    container.appendChild(replyBubble);
+
+                    container.scrollTo({
+                        top: container.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 1000 + Math.random() * 800);
+        }
+
+        // Event Listeners setup
+        document.addEventListener('DOMContentLoaded', () => {
+            // Clear hash on fresh load to prevent issues
+            if (window.location.hash === '#chat') {
+                window.history.replaceState(null, '', window.location.pathname);
+            }
+
+            // Click handlers on chat items
+            document.querySelectorAll('.chat-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const name = item.querySelector('.chat-name').innerText;
+                    const avatar = item.querySelector('.chat-avatar').src;
+                    openChat(name, avatar);
+                });
+            });
+
+            // Back button click handler
+            document.getElementById('btn-chat-back').addEventListener('click', () => {
+                window.history.back();
+            });
+
+            // Input handlers
+            const messageInput = document.getElementById('chat-message-input');
+            const btnChatSend = document.getElementById('btn-chat-send');
+            const plusIcon = document.getElementById('plus-icon');
+            const sendIcon = document.getElementById('send-icon');
+
+            messageInput.addEventListener('input', () => {
+                if (messageInput.value.trim() !== '') {
+                    plusIcon.style.display = 'none';
+                    sendIcon.style.display = 'block';
+                } else {
+                    plusIcon.style.display = 'block';
+                    sendIcon.style.display = 'none';
+                }
+            });
+
+            messageInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    sendUserMessage();
+                }
+            });
+
+            btnChatSend.addEventListener('click', () => {
+                if (messageInput.value.trim() !== '') {
+                    sendUserMessage();
+                }
+            });
+
+            // Handle browser back button
+            window.addEventListener('popstate', () => {
+                if (window.location.hash !== '#chat') {
+                    closeChat();
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
