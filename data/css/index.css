@@ -5,6 +5,13 @@
     padding: 0;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    /* Hide scrollbars globally */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
 }
 
 body {
@@ -15,6 +22,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    min-height: 100dvh;
     margin: 0;
     overflow: hidden;
 }
@@ -23,31 +31,17 @@ body {
 .app-container {
     width: 100%;
     max-width: 480px;
-    /* Portrait mobile screen ratio */
     height: 100vh;
+    height: 100dvh;
     max-height: 960px;
     background: linear-gradient(110deg, #000000 0%, #060708 35%, #464a4f 100%);
     display: flex;
     flex-direction: column;
-    padding: 50px 24px;
+    padding: clamp(20px, 4dvh, 40px) 20px;
     position: relative;
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.05);
     overflow: hidden;
-}
-
-/* Scrollbar styling */
-.app-container::-webkit-scrollbar {
-    width: 4px;
-}
-
-.app-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.app-container::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
 }
 
 @media (max-width: 480px) {
@@ -58,10 +52,12 @@ body {
     .app-container {
         max-width: 100%;
         height: 100vh;
+        height: 100dvh;
         max-height: 100vh;
+        max-height: 100dvh;
         border: none;
         box-shadow: none;
-        padding: 40px 20px;
+        padding: clamp(16px, 3dvh, 32px) 16px;
     }
 }
 
@@ -71,8 +67,7 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 52px;
-    /* Spacing between header and the first chat item */
+    margin-bottom: clamp(16px, 4dvh, 36px);
 }
 
 .logo-text {
@@ -167,18 +162,6 @@ body {
     padding-right: 4px;
 }
 
-.chat-list::-webkit-scrollbar {
-    width: 4px;
-}
-
-.chat-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.chat-list::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-}
 
 .chat-item {
     display: flex;
@@ -275,7 +258,7 @@ body {
     background: linear-gradient(110deg, #000000 0%, #060708 35%, #464a4f 100%);
     display: flex;
     flex-direction: column;
-    padding: 50px 24px 40px 24px;
+    padding: clamp(20px, 4dvh, 40px) 20px clamp(16px, 3dvh, 32px) 20px;
     z-index: 100;
     transform: translateX(100%);
     transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
@@ -289,7 +272,7 @@ body {
 
 @media (max-width: 480px) {
     .chat-view {
-        padding: 40px 20px 30px 20px;
+        padding: clamp(16px, 3dvh, 32px) 16px clamp(12px, 2.5dvh, 24px) 16px;
     }
 }
 
@@ -299,7 +282,7 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 44px;
+    margin-bottom: clamp(16px, 4dvh, 32px);
 }
 
 /* Circular Back Button */
@@ -393,19 +376,6 @@ body {
     padding-right: 4px;
 }
 
-/* Scrollbar styling for message area */
-.chat-content::-webkit-scrollbar {
-    width: 4px;
-}
-
-.chat-content::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.chat-content::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 2px;
-}
 
 /* Chat Bubbles */
 .chat-bubble-placeholder {
@@ -556,20 +526,9 @@ body {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: clamp(16px, 3dvh, 28px);
     padding-right: 4px;
     margin-bottom: 20px;
-}
-
-.settings-content::-webkit-scrollbar,
-.profile-content::-webkit-scrollbar {
-    width: 4px;
-}
-
-.settings-content::-webkit-scrollbar-thumb,
-.profile-content::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 2px;
 }
 
 /* Profile Card in Settings */
