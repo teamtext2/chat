@@ -63,7 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (btnSend) {
-        btnSend.addEventListener('click', sendMessage);
+        // Prevent keyboard from closing on tap
+        btnSend.addEventListener('mousedown', (e) => e.preventDefault());
+        btnSend.addEventListener('touchstart', (e) => e.preventDefault());
+        btnSend.addEventListener('click', () => {
+            sendMessage();
+            if (chatInput) chatInput.focus();
+        });
     }
     if (chatInput) {
         chatInput.addEventListener('keydown', (e) => {
@@ -71,6 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 sendMessage();
             }
+        });
+    }
+    const btnBack = document.querySelector('.btn-back');
+    if (btnBack && chatInput) {
+        btnBack.addEventListener('click', () => {
+            chatInput.blur();
         });
     }
 

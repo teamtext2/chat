@@ -432,6 +432,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Back buttons click handlers
     document.getElementById('btn-chat-back').addEventListener('click', () => {
+        const input = document.getElementById('chat-message-input');
+        if (input) input.blur();
         window.history.back();
     });
     document.getElementById('btn-settings-back').addEventListener('click', () => {
@@ -546,14 +548,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     messageInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
             sendUserMessage();
         }
     });
 
+    // Prevent keyboard from closing when tapping the send button
+    btnChatSend.addEventListener('mousedown', (e) => e.preventDefault());
+    btnChatSend.addEventListener('touchstart', (e) => e.preventDefault());
     btnChatSend.addEventListener('click', () => {
         if (messageInput.value.trim() !== '') {
             sendUserMessage();
+            messageInput.focus();
         }
     });
 
