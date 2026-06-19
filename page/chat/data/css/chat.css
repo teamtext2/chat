@@ -75,6 +75,7 @@ body {
     align-items: center;
     width: 100%;
     margin-bottom: clamp(16px, 4dvh, 32px);
+    flex-shrink: 0;
 }
 
 /* Circular Back Button */
@@ -279,4 +280,14 @@ body {
 
 .btn-plus:active {
     transform: scale(0.95);
+}
+
+/* Keyboard open dynamic layout overrides */
+.app-container.keyboard-open .header {
+    margin-bottom: clamp(6px, 2dvh, 12px);
+}
+
+.app-container.keyboard-open .chat-content {
+    margin-bottom: clamp(10px, 2.5dvh, 16px);
+    gap: clamp(8px, 2dvh, 14px);
 }
