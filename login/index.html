@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="google" content="notranslate">
+    <title>Login - Text2Chat</title>
+    <!-- Premium font for exact typography matches -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS reset and scrollbar hiding */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
+
+        *::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            background: transparent !important;
+        }
+
+        html {
+            height: 100%;
+            height: -webkit-fill-available;
+            width: 100vw;
+            overscroll-behavior-y: none;
+        }
+
+        body {
+            background-color: #0b0c0e;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0;
+            overflow: hidden;
+            width: 100vw;
+            overscroll-behavior-y: none;
+        }
+
+        /* Matches the app-container from index.css */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            height: -webkit-fill-available;
+            height: 100dvh;
+            max-height: 960px;
+            background: linear-gradient(110deg, #000000 0%, #060708 35%, #464a4f 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: clamp(24px, 5dvh, 48px) 24px calc(clamp(28px, 6dvh, 52px) + env(safe-area-inset-bottom, 0px)) 24px;
+            position: relative;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                background-color: #000000;
+            }
+
+            .app-container {
+                max-width: 100%;
+                height: 100vh;
+                height: -webkit-fill-available;
+                height: 100dvh;
+                max-height: 100vh;
+                max-height: -webkit-fill-available;
+                max-height: 100dvh;
+                border: none;
+                box-shadow: none;
+                padding: clamp(20px, 4dvh, 36px) 20px calc(clamp(24px, 5dvh, 44px) + env(safe-area-inset-bottom, 0px)) 20px;
+            }
+        }
+
+        /* Premium glowing effects behind app container */
+        .glow-overlay {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        /* Login Card */
+        .login-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            z-index: 1;
+            flex-grow: 1;
+            justify-content: center;
+            gap: 36px;
+        }
+
+        /* Animated Glowing Logo Badge */
+        .badge-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+            animation: pulseGlow 4s infinite alternate;
+        }
+
+        .badge-inner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                border-color: rgba(255, 255, 255, 0.15);
+                box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3), 0 0 0 0px rgba(16, 185, 129, 0.05);
+            }
+            100% {
+                border-color: rgba(16, 185, 129, 0.4);
+                box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4), 0 0 20px 4px rgba(16, 185, 129, 0.15);
+            }
+        }
+
+        .welcome-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .welcome-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.55);
+            max-width: 320px;
+            line-height: 1.5;
+        }
+
+        /* Features List Wrapper */
+        .features-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-width: 380px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            color: #10b981;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .feature-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.45);
+            line-height: 1.4;
+        }
+
+        /* Google button container */
+        .auth-container {
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            min-height: 52px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 26px;
+            padding: 6px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .auth-wrapper:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Footer styling */
+        .footer {
+            width: 100%;
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+            line-height: 1.6;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        /* Loading spinner */
+        .loader {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-top: 2px solid #10b981;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast notifications styling */
+        .toast {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(0, 80, 57, 0.9);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            text-align: center;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="glow-overlay"></div>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-text">Text2Chat</div>
+        </header>
+
+        <!-- Core Login Content -->
+        <main class="login-card">
+            <!-- Glowing Circle Logo Badge -->
+            <div class="badge-wrapper">
+                <div class="badge-inner">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Welcome Text -->
+            <div class="welcome-group">
+                <h2 class="welcome-title">Welcome Back</h2>
+                <p class="welcome-subtitle">Sign in to sync your profile and access real-time secure messaging.</p>
+            </div>
+
+            <!-- Sleek Glassmorphic Feature list -->
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <div class="feature-text">
+                        <h4 class="feature-title">End-to-End Privacy</h4>
+                        <p class="feature-desc">All chat histories are strictly saved locally inside your browser's IndexedDB.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="feature-text">
+                        <h4 class="feature-title">Realtime Messaging</h4>
+                        <p class="feature-desc">Direct WebSockets forward message payloads instantly via Hugging Face Space API.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                            <path d="M12 2a10 10 0 0 1 10 10h-10V2z" stroke-dasharray="2,2"></path>
+                        </svg>
+                    </div>
+                    <div class="feature-text">
+                        <h4 class="feature-title">Cloud Profile Backups</h4>
+                        <p class="feature-desc">Synchronize and protect your user bio and custom avatar in Cloudflare R2.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login button integration -->
+            <div class="auth-container">
+                <div class="auth-wrapper" id="auth-btn-wrapper">
+                    <!-- Google standard loader setup -->
+                    <div id="g_id_onload"
+                         data-client_id="1040333246473-abc123example.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleCredentialResponse"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="pill"
+                         data-theme="filled_black"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-logo_alignment="left"
+                         data-width="320">
+                    </div>
+                </div>
+                <div class="loader" id="spinner"></div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            By signing in, you connect your identity.<br>
+            Text2Chat © 2026. All messages are stored offline.
+        </footer>
+    </div>
+
+    <div class="toast" id="toast-notif"></div>
+
+    <!-- Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <script>
+        // Redirect if already authenticated
+        window.addEventListener('DOMContentLoaded', () => {
+            const userProfile = localStorage.getItem('user-profile');
+            if (userProfile) {
+                try {
+                    const parsed = JSON.parse(userProfile);
+                    if (parsed.loggedIn && parsed.username) {
+                        window.location.replace('../index.html');
+                    }
+                } catch(e) {
+                    localStorage.removeItem('user-profile');
+                }
+            }
+        });
+
+        // Toast display utility
+        function showNotification(message) {
+            const toast = document.getElementById('toast-notif');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Token Decode helper
+        function decodeJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                console.error("JWT Decode error:", e);
+                return null;
+            }
+        }
+
+        // Google Callback Response
+        async function handleCredentialResponse(response) {
+            const spinner = document.getElementById('spinner');
+            const authWrapper = document.getElementById('auth-btn-wrapper');
+            
+            authWrapper.style.display = 'none';
+            spinner.style.display = 'block';
+            
+            try {
+                const payload = decodeJwt(response.credential);
+                if (!payload || !payload.email) {
+                    throw new Error("Invalid credential token response");
+                }
+
+                // Extract username
+                const emailPrefix = payload.email.split('@')[0];
+                let username = emailPrefix.toLowerCase().replace(/[^a-z0-9]/g, '');
+                
+                if (!username) {
+                    username = 'user' + Math.floor(Math.random() * 10000);
+                }
+
+                // Profile payload
+                const userProfile = {
+                    name: payload.name || username.toUpperCase(),
+                    username: username,
+                    bio: "Designing the future of communication. 🚀",
+                    email: payload.email,
+                    status: "online",
+                    avatar: payload.picture || "https://text2.co/favicon.ico",
+                    loggedIn: true,
+                    google_id: payload.sub
+                };
+
+                // Store locally
+                localStorage.setItem('user-profile', JSON.stringify(userProfile));
+                showNotification("Success! Synced with server.");
+
+                // Background sync
+                const hfUrl = localStorage.getItem('hf-space-url') || 'http://localhost:7860';
+                try {
+                    const syncRes = await fetch(`${hfUrl}/api/profile`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(userProfile)
+                    });
+                    
+                    if (!syncRes.ok) {
+                        console.warn("Server sync check status non-200:", await syncRes.text());
+                    }
+                } catch(err) {
+                    console.warn("Backend was unreachable during login sync. Kept local profile.", err);
+                }
+
+                // Redirect to main panel
+                setTimeout(() => {
+                    window.location.replace('../index.html');
+                }, 800);
+
+            } catch (err) {
+                console.error(err);
+                showNotification("Authentication failed. Please try again.");
+                authWrapper.style.display = 'flex';
+                spinner.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

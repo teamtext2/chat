@@ -23,6 +23,25 @@
 
         gtag('config', 'G-6J85STMJ14');
     </script>
+    <script>
+        // Auth check before rendering body
+        (function() {
+            const userProfile = localStorage.getItem('user-profile');
+            if (!userProfile) {
+                window.location.replace('login/index.html');
+            } else {
+                try {
+                    const parsed = JSON.parse(userProfile);
+                    if (!parsed.loggedIn || !parsed.username) {
+                        window.location.replace('login/index.html');
+                    }
+                } catch(e) {
+                    localStorage.removeItem('user-profile');
+                    window.location.replace('login/index.html');
+                }
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="data/css/index.css?v=4">
 </head>
 
@@ -305,6 +324,27 @@
                             <input type="checkbox" id="setting-read-receipts" checked>
                             <span class="slider round"></span>
                         </label>
+                    </div>
+
+                    <!-- Hugging Face Space API URL -->
+                    <div class="settings-item select-item" id="setting-hf-url-trigger">
+                        <div class="settings-item-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                                <line x1="6" y1="6" x2="6.01" y2="6"/>
+                                <line x1="6" y1="18" x2="6.01" y2="18"/>
+                            </svg>
+                        </div>
+                        <div class="settings-item-label">
+                            <span>HF Server URL</span>
+                            <span class="settings-item-value" id="current-hf-url-label">http://localhost:7860</span>
+                        </div>
+                        <div class="profile-card-arrow">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
                     </div>
                 </div>
 
