@@ -5,13 +5,33 @@
     padding: 0;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
-    /* Hide scrollbars globally */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
 }
 
+/* Strict Scrollbar Hiding for all scrollable wrappers */
+.chat-list,
+.chat-content,
+.settings-content,
+.profile-content,
+.app-container,
+html,
+body,
+* {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+}
+
+.chat-list::-webkit-scrollbar,
+.chat-content::-webkit-scrollbar,
+.settings-content::-webkit-scrollbar,
+.profile-content::-webkit-scrollbar,
+.app-container::-webkit-scrollbar,
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
 *::-webkit-scrollbar {
-    display: none;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
 }
 
 html {
@@ -26,9 +46,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    min-height: 100dvh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     margin: 0;
     overflow: hidden;
 }
