@@ -37,6 +37,8 @@ body::-webkit-scrollbar,
 html {
     height: 100%;
     height: -webkit-fill-available;
+    width: 100vw;
+    overscroll-behavior-y: none;
 }
 
 body {
@@ -53,6 +55,8 @@ body {
     bottom: 0;
     margin: 0;
     overflow: hidden;
+    width: 100vw;
+    overscroll-behavior-y: none;
 }
 
 /* App container matching the mobile aspect ratio */
@@ -66,7 +70,7 @@ body {
     background: linear-gradient(110deg, #000000 0%, #060708 35%, #464a4f 100%);
     display: flex;
     flex-direction: column;
-    padding: clamp(20px, 4dvh, 40px) 20px calc(clamp(16px, 3dvh, 32px) + env(safe-area-inset-bottom, 0px)) 20px;
+    padding: clamp(20px, 4dvh, 40px) 20px calc(clamp(14px, 3dvh, 26px) + env(safe-area-inset-bottom, 0px)) 20px;
     position: relative;
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -86,7 +90,7 @@ body {
         max-height: 100dvh;
         border: none;
         box-shadow: none;
-        padding: clamp(16px, 3dvh, 32px) 16px calc(clamp(12px, 2.5dvh, 24px) + env(safe-area-inset-bottom, 0px)) 16px;
+        padding: clamp(16px, 3dvh, 32px) 16px calc(clamp(10px, 2dvh, 20px) + env(safe-area-inset-bottom, 0px)) 16px;
     }
 }
 
@@ -180,6 +184,7 @@ body {
     flex-direction: column;
     gap: clamp(12px, 3dvh, 22px);
     overflow-y: auto;
+    overscroll-behavior-y: contain;
     margin-bottom: clamp(16px, 3dvh, 30px);
     padding-right: 4px;
 }
@@ -214,6 +219,8 @@ body {
     align-items: center;
     gap: 12px;
     width: 100%;
+    position: relative;
+    z-index: 999;
 }
 
 .input-wrapper {

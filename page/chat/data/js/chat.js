@@ -74,5 +74,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
+    // Visual Viewport resize handler to prevent keyboard jumping
+    if (window.visualViewport && appContainer) {
+        window.visualViewport.addEventListener('resize', () => {
+            // Force app-container to exact visual viewport height after keyboard shows
+            appContainer.style.height = `${window.visualViewport.height}px`;
+            
+            // Instantly reset browser-level layout scroll to 0
+            window.scrollTo(0, 0); 
+            document.body.scrollTop = 0;
+            
+            // Push content to the bottom
+            if (chatContent) {
+                chatContent.scrollTop = chatContent.scrollHeight;
+            }
+        });
+    }
 });
