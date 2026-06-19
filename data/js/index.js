@@ -184,6 +184,7 @@ function sendUserMessage() {
     container.appendChild(bubble);
 
     messageInput.value = '';
+    messageInput.style.height = 'auto';
     document.getElementById('plus-icon').style.display = 'block';
     document.getElementById('send-icon').style.display = 'none';
 
@@ -732,17 +733,27 @@ document.addEventListener('DOMContentLoaded', () => {
             appContainer.classList.remove('keyboard-open');
             forceScrollTop();
         });
+
+        // Auto-growing textarea logic
+        chatInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
     }
 
     if (window.visualViewport && appContainer) {
         const handleViewportResize = () => {
             const height = window.visualViewport.height;
+            const offsetTop = window.visualViewport.offsetTop;
             appContainer.style.height = `${height}px`;
+            
+            // Offset any automatic page scroll by translating the container down
+            appContainer.style.transform = offsetTop > 0 ? `translateY(${offsetTop}px)` : '';
+            
             window.scrollTo(0, 0);
             document.body.scrollTop = 0;
         };
         window.visualViewport.addEventListener('resize', handleViewportResize);
-        window.visualViewport.addEventListener('scroll', handleViewportResize);
     }
 });
 
