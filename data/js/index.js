@@ -712,26 +712,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Keyboard and Visual Viewport Auto-resizing for mobile devices
+    // Keyboard layout toggling for mobile devices
     const chatInput = document.getElementById('chat-message-input');
     const appContainer = document.querySelector('.app-container');
     
     if (chatInput && appContainer) {
-        const forceScrollTop = () => {
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-                document.body.scrollTop = 0;
-            }, 80);
-        };
-
         chatInput.addEventListener('focus', () => {
             appContainer.classList.add('keyboard-open');
-            forceScrollTop();
+            const chatContent = document.getElementById('chat-messages-container');
+            setTimeout(() => {
+                if (chatContent) {
+                    chatContent.scrollTop = chatContent.scrollHeight;
+                }
+            }, 300);
         });
         
         chatInput.addEventListener('blur', () => {
             appContainer.classList.remove('keyboard-open');
-            forceScrollTop();
         });
 
         // Auto-growing textarea logic
@@ -739,21 +736,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.style.height = 'auto';
             this.style.height = Math.min(this.scrollHeight, 120) + 'px';
         });
-    }
-
-    if (window.visualViewport && appContainer) {
-        const handleViewportResize = () => {
-            const height = window.visualViewport.height;
-            const offsetTop = window.visualViewport.offsetTop;
-            appContainer.style.height = `${height}px`;
-            
-            // Offset any automatic page scroll by translating the container down
-            appContainer.style.transform = offsetTop > 0 ? `translateY(${offsetTop}px)` : '';
-            
-            window.scrollTo(0, 0);
-            document.body.scrollTop = 0;
-        };
-        window.visualViewport.addEventListener('resize', handleViewportResize);
     }
 });
 

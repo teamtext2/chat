@@ -6,21 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSend = document.getElementById('btn-chat-send');
     
     if (chatInput && appContainer) {
-        const forceScrollTop = () => {
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-                document.body.scrollTop = 0;
-            }, 80);
-        };
-
         chatInput.addEventListener('focus', () => {
             appContainer.classList.add('keyboard-open');
-            forceScrollTop();
+            // Smoothly scroll message container to bottom after virtual keyboard transitions
+            setTimeout(() => {
+                if (chatContent) {
+                    chatContent.scrollTop = chatContent.scrollHeight;
+                }
+            }, 300);
         });
         
         chatInput.addEventListener('blur', () => {
             appContainer.classList.remove('keyboard-open');
-            forceScrollTop();
         });
 
         // Auto-growing textarea logic
@@ -77,19 +74,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Visual Viewport resize handler to prevent keyboard jumping
-    if (window.visualViewport && appContainer) {
-        const handleViewportResize = () => {
-            const height = window.visualViewport.height;
-            const offsetTop = window.visualViewport.offsetTop;
-            appContainer.style.height = `${height}px`;
-            
-            // Offset any automatic page scroll by translating the container down
-            appContainer.style.transform = offsetTop > 0 ? `translateY(${offsetTop}px)` : '';
-            
-            window.scrollTo(0, 0);
-            document.body.scrollTop = 0;
-        };
-        window.visualViewport.addEventListener('resize', handleViewportResize);
-    }
+
 });
